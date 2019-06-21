@@ -1,2 +1,2 @@
 # Blog_Project
-This is the BLOG project related to POSTS and COMMENTS,which is done by using Python and Django.
+This is the BLOG project,done by using Python and Django.
