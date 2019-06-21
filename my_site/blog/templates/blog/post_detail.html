@@ -1,0 +1,88 @@
+{% extends "blog/base.html" %}
+{% block content%}
+
+<div>
+
+<h1 class="loader techfont">{{ post.title }}</h1>
+{% if post.published_date %}
+<div class="date postdate">
+    {{ post.published_date }}
+</div>
+{% else %}
+    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}"> Publish</a>
+{% endif %}
+    <p class="postcontent" >{{post.text|safe|linebreaksbr}}</p>
+
+{% if user.is_authenticted %}
+<div>
+<a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fas fa-edit"></i>Edit</a>
+</div>
+<div>
+<a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fas fa-trash-alt">Remove</i></a>
+<a href=""></a>
+</div>
+{% endif %}
+<hr>
+<a class="btn btn-primary" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a><br><br>
+<div>
+{% for comment in post.comments.all %}
+{% if user.is_authenticated or comment.approved_comment %} 
+{{ comment.created_date }} <br><br><br>
+    {% if not comment.approved_comment %}
+       <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk%}"><i class="fas fa-edit"> Approve Comment</a>&nbsp;&nbsp;
+       <a class="btn btn-primary" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-trash-alt"> Remove comment</a><br><br>
+    {% endif %}
+<p>{{ comment.text|safe|linebreaksbr}}</p><br>
+<p>Posted By: {{ comment.author }}</p><br>
+
+{% endif %}
+{% empty %}
+<br><br>
+<p>No Commments!</p>
+
+{% endfor %}
+</div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
